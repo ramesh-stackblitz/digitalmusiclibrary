@@ -1,0 +1,30 @@
+<header class="container-fluid">
+  <div class="row">
+    <div class="col-sm-9 py-2"><h5 class="logo">Digital Music Library</h5></div>
+    <div *ngIf="!user" class="col-sm-3 d-flex justify-content-end align-items-center">
+      <a routerLink='admin' rounterLinkActive='active' class="loginLink notloggedin">Login</a>
+    </div>
+    <div *ngIf="user" class="col-sm-3 d-flex justify-content-end align-items-center">
+      <img src="./assets/images/user-icon.png" class="user-icon"/><span class="login-txt">{{user}}</span> <a routerLink='albumList' (click)="logOut()" rounterLinkActive='active'  class="loginLink notloggedin">Logout</a>
+    </div>
+    <div class="col-sm-12">
+      <img src="./assets/images/DML_header.jpg" alt="Digital Music Library" />
+    </div>
+  </div>
+</header>
+<section class="container-fluid main-container">
+  <div class="row">
+    <div class="col-sm-12">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+</section>
+<footer class="container-fluid">
+  <div class="row">
+    <div class="col-sm-9 py-2">Digital Music Library</div>
+    <div class="col-sm-3 py-2 d-flex justify-content-end">
+      <div>Copyright @2020</div>
+    </div>
+  </div>
+</footer>

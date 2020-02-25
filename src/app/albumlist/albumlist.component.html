@@ -1,0 +1,189 @@
+<ng-container *ngIf="!isAdminFlag">
+  <div class="row mt-3 mb-3">
+    <div class="col-sm-4 d-flex align-items-center">
+      <h3>Search here for classical music</h3>
+    </div>
+    <div class="col-sm-5 d-flex align-items-center">
+      <span class="play-txt">Lastest Album Playing</span>
+      <span>
+        <audio controls autoplay>
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+      </span>
+    </div>
+    <div class="col-sm-3">
+      <div (change)="updateResults()" (keyup)="updateResults()">
+          <div class="active-cyan-4 m-2">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="search">
+          </div>
+        </div>
+    </div>
+  </div>
+  <section class="cards">
+    <div class="card" *ngFor="let albumlist of albumlist | tableFilter : search">
+      <div class="card-body">
+        <div class="avatar-upload">
+          <img src="{{albumlist.thumnailImg}}" alt="{{albumlist.thumnailImg}}" />
+        </div>
+        <h5> <img src="./assets/images/play-icon.jpg" alt="player" class="play-icon" /> <span>{{albumlist.titleName}}</span></h5>
+        <p>{{albumlist.albumName}}</p>
+        <p>{{albumlist.composerName}}</p>
+        <p>{{albumlist.relasedDate}}</p>
+        <p>{{albumlist.artistName}}</p>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
+<section>
+
+  <ng-container *ngIf="!isUserFlag && isAdminFlag">
+    <div class="row mt-3 mb-3 admin-search">
+      <div class="col-sm-4 offset-sm-8 d-flex justify-content-end">
+        <div (change)="updateResults()" (keyup)="updateResults()">
+          <div class="active-cyan-4 m-2">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="searchValue">
+          </div>
+        </div>
+        <div *ngIf="isAdminFlag">
+          <button class="addBtn m-3" (click)="showAddAlbumForm()">Add Album List</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive editor">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Thumbnail</th>
+            <th>TitleName</th>
+            <th>AlbumName</th>
+            <th>ComposerName</th>
+            <th>RelasedDate</th>
+            <th>artistName</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let albumlist of filterItems, index as i">
+            <td>{{albumlist.id}}</td>
+            <td>
+              <img src="{{albumlist.thumnailImg}}" alt="{{albumlist.thumnailImg}}" />
+            </td>
+            <td>{{albumlist.titleName}}</td>
+            <td>{{albumlist.albumName}}</td>
+            <td>{{albumlist.composerName}}</td>
+            <td>{{albumlist.relasedDate}}</td>
+            <td>{{albumlist.artistName}}</td>
+            <td>
+              <button class="editBtn" (click)="showEditAlbumForm(albumlist)">Edit</button>
+            </td>
+            <td>
+              <button class="deleteBtn" (click)="removeAlbumList(i)">Delete</button>
+            </td>
+          </tr>
+          <tr *ngIf="filterItems.length == 0">
+            <td colspan="9">No data found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</section>
+
+<section class="row mb-5">
+  <div class="col-sm-6 offset-sm-3">
+    <form *ngIf="albumListForm">
+      <div class="form-group row">
+        <label for="id" class="col-sm-2 col-form-label col-form-label-sm">ID</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="id" [(ngModel)]="newAlbumListForm.id">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label-sm">Title Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="titleName" [(ngModel)]="newAlbumListForm.titleName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label-sm">Thumbnail</label>
+        <div class="col-sm-10 imageUpload">
+          <img *ngIf="newAlbumListForm.thumnailImg" [src]="newAlbumListForm.thumnailImg" class="mr-3" />
+          <input type='file' (change)="onSelectFile($event)" name="thumnailImg" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="albumName" class="col-sm-2 col-form-label col-form-label-sm">Album Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="albumName" [(ngModel)]="newAlbumListForm.albumName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="composerName" class="col-sm-2 col-form-label col-form-label-sm">Composer Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="composerName" [(ngModel)]="newAlbumListForm.composerName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="relasedDate" class="col-sm-2 col-form-label col-form-label-sm">Relased Date</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control form-control-sm" name="relasedDate" [(ngModel)]="newAlbumListForm.relasedDate">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="artistName" class="col-sm-2 col-form-label col-form-label-sm">Artist Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="artistName" [(ngModel)]="newAlbumListForm.artistName">
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mb-5">
+        <button class="btn btn-primary mr-2" (click)="saveAlbumList(newAlbumListForm)">Submit</button>
+        <button class="btn btn-secondary" (click)="cancelNewAlbumList()">Cancel</button>
+      </div>
+    </form>
+    <form *ngIf="editAlbumlistForm">
+      <div class="form-group row">
+        <label for="id" class="col-sm-2 col-form-label col-form-label-sm">ID</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="id" [(ngModel)]="editedAlbumlist.id">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label-sm">Title Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="titleName" [(ngModel)]="editedAlbumlist.titleName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="albumName" class="col-sm-2 col-form-label col-form-label-sm">Album Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="albumName" [(ngModel)]="editedAlbumlist.albumName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="composerName" class="col-sm-2 col-form-label col-form-label-sm">Composer Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="composerName" [(ngModel)]="editedAlbumlist.composerName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="relasedDate" class="col-sm-2 col-form-label col-form-label-sm">Relased Date</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control form-control-sm" name="relasedDate" [(ngModel)]="editedAlbumlist.relasedDate">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="artistName" class="col-sm-2 col-form-label col-form-label-sm">Artist Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control form-control-sm" name="artistName" [(ngModel)]="editedAlbumlist.artistName">
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mb-5">
+        <button class="btn btn-primary mr-2" (click)="updateAlbumlist(editedAlbumlist.id)">Submit</button>
+        <button class="btn btn-secondary" (click)="cancelEdits()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</section>

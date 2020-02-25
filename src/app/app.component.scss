@@ -1,0 +1,68 @@
+.height {
+    height: 100%;
+}
+
+.loginLink {
+    background-color: #cacaca;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    padding: 6px 15px;
+    height: 30px;
+    &.notloggedin {
+        border-left: 10px solid #e93b94;
+        text-transform: uppercase;
+    }
+}
+
+.logo {
+    color: #e93b94;
+}
+
+@media (min-width: 768px) {
+    header {
+        img {
+            height: 250px;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .logo {
+        font-size: 1rem;
+        color: #e93b94;
+    }
+}
+
+footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding: 8px 0; 
+   color: #000;
+   text-align: center;
+}
+
+.main-container {
+    height: -moz-calc(100% - 80px);
+    height: -webkit-calc(100% - 80px);
+    height: calc(100% - 80px);
+    display:block;
+}
+
+html, body {
+    @extend .height;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.login-txt {
+    font-size: 1rem;
+    padding-right: 10px;
+    padding-left: 10px;
+}
